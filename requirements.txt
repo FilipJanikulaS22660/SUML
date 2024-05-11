@@ -7,6 +7,4 @@ torchvision==0.18.0
 tensorflow==2.16.1
 transformers_interpret==0.5.1
 pandas==1.0.3
-streamlit
-torch
-transformers
+
