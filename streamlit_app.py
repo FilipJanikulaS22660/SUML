@@ -2,8 +2,6 @@ import streamlit as st
 import time
 import streamlit as st
 from transformers import pipeline
-from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
-# zaczynamy od zaimportowania bibliotek
 
 st.success('Gratulacje! Z powodzeniem uruchomiłeś aplikację')
 
@@ -13,11 +11,9 @@ st.header('Przetwarzanie języka naturalnego')
 
 st.write('Aplikacja posiada dwie opcje. Pierwsza pozwala określić wydźwięk emocjonalny tekstu. Druga pozwala na przetłumaczenie angielskiego tekstu na niemiecki.')
 
-st.write('Funkcja tłumaczenie korzysta z modelu Llama2-13b-Language-translate udostępnionego na platformie Hugging Face https://huggingface.co/SnypzZz/Llama2-13b-Language-translate')
+st.write('Funkcja tłumaczenie korzysta z modelu google-t5/t5-base udostępnionego na platformie Hugging Face https://huggingface.co/google-t5/t5-base')
 
 st.write('Aby użyć opcji tłumaczenie należy z rozwijanego menu wybrać "Tłumaczenie angielskiego na niemiecki"')
-
-
 
 def typewriter(text: str, speed: int):
                 tokens = text.split()
@@ -46,16 +42,12 @@ elif option =="Tłumaczenie angielskiego na niemiecki":
     sentence = st.text_area(label="Wpisz tekst po angielsku")
     if sentence:
         with st.spinner(text='Trwa tłumaczenie...'):
-            model = MBartForConditionalGeneration.from_pretrained("SnypzZz/Llama2-13b-Language-translate")
-            tokenizer = MBart50TokenizerFast.from_pretrained("SnypzZz/Llama2-13b-Language-translate", src_lang="en_XX")
 
-            model_inputs = tokenizer(sentence, return_tensors="pt")
-            generated_tokens = model.generate(
-                **model_inputs,
-                forced_bos_token_id=tokenizer.lang_code_to_id["de_DE"]
-            )
+            translator = pipeline("translation_en_to_de", model="t5-base")
 
-        translated = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+            translation = translator(sentence, max_length=1024)
+            translated = translation[0]['translation_text']
+
 
         if translated == sentence:
             st.error('Błąd, wiadomość nie jest w języku angielskim.')
@@ -67,5 +59,4 @@ elif option =="Tłumaczenie angielskiego na niemiecki":
             typewriter(text=text, speed=speed)
             st.balloons()
 
-        st.header('Filip Janikula s22660')
-        
+st.header('Filip Janikula s22660')
