@@ -1,8 +1,8 @@
 import streamlit as st
 import time
 import streamlit as st
-#from transformers import pipeline
-import transformers
+from transformers import pipeline
+#import transformers
 
 st.success('Gratulacje! Z powodzeniem uruchomiłeś aplikację')
 
