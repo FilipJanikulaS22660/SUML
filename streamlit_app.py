@@ -18,7 +18,6 @@ def main():
     st.success('Gratulacje! Z powodzeniem uruchomiłeś aplikację')
 
 
-    st.set_page_config(page_title="Czy przeżybył katastrofę?")
     overview = st.container()
     left, right = st.columns(2)
     prediction = st.container()
